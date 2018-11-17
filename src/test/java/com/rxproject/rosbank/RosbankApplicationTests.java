@@ -1,9 +1,13 @@
 package com.rxproject.rosbank;
 
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.rxproject.rosbank.model.Account;
 import com.rxproject.rosbank.model.Card;
+import com.rxproject.rosbank.model.Form;
 import com.rxproject.rosbank.model.User;
 import com.rxproject.rosbank.repository.AccountRepository;
+import com.rxproject.rosbank.repository.FormRepository;
 import com.rxproject.rosbank.repository.UserRepository;
 import com.rxproject.rosbank.service.CardService;
 import com.rxproject.rosbank.service.UserService;
@@ -11,11 +15,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.persistence.Table;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -35,10 +36,18 @@ public class RosbankApplicationTests {
 	@Autowired
 	AccountRepository accountRepository;
 
+	@Autowired
+	FormRepository formRepository;
+
 	@Test
 	public void customTest(){
-		User user = userRepository.findByCardNo("3428429766619371");
-		int bp = 42;
+		JsonNodeFactory jnf = JsonNodeFactory.instance;
+		ObjectNode on = jnf.objectNode();
+		on.put("text","asdasdasdasd");
+		on.put("photo", "asdasdasdasdasd");
+		Form form = new Form();
+		form.setJson(on.toString());
+		formRepository.save(form);
 	}
 
 	@Test
