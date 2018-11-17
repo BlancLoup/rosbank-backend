@@ -1,12 +1,16 @@
 package com.rxproject.rosbank.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rxproject.rosbank.utils.ViewWrapper;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.IOException;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "dialog_states")
@@ -34,7 +38,7 @@ public class DialogState {
     private String endpoint;
 
     @Transient
-    private JsonNode view;
+    private ViewWrapper view;
 
     public enum Type {
         BUTTON,
@@ -43,6 +47,19 @@ public class DialogState {
         DOC,
         PHOTO
     }
+
+    @JsonGetter("message")
+    public JsonNode getBodyAsJson(){
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readTree(message);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    @OneToMany(mappedBy = "state")
+    Set<Button> buttons;
 
     @Override
     public boolean equals(Object o) {

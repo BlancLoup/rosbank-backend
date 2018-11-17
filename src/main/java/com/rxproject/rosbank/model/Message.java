@@ -1,11 +1,15 @@
 package com.rxproject.rosbank.model;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Objects;
 
@@ -13,7 +17,13 @@ import java.util.Objects;
 @Table(name = "messages")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Message {
+
+    public Message(User user){
+        this.user = user;
+        this.timestamp = new Date();
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,17 +32,33 @@ public class Message {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
-    @Column(name = "ds_json")
-    private String dsJson;
+    @Column(name = "body")
+    private String body;
 
-    @Column(name = "reply_json")
-    private String replyJson;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type")
+    private Type type;
 
     @Column(name = "timestamp")
     private Date timestamp;
 
+    public enum Type{
+        USER,
+        BOT
+    }
+
+    @JsonGetter("body")
+    public JsonNode getBodyAsJson(){
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readTree(body);
+        } catch (IOException e) {
+            return null;
+        }
+    }
 
     @JsonGetter("timestamp")
     public long getTimestampJson(){

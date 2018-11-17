@@ -1,10 +1,13 @@
 package com.rxproject.rosbank.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.IOException;
 import java.util.Objects;
 
 @Entity
@@ -20,6 +23,16 @@ public class Form {
 
     @Column(name = "json")
     private String json;
+
+    @JsonGetter("json")
+    public JsonNode getBodyAsJson(){
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readTree(json);
+        } catch (IOException e) {
+            return null;
+        }
+    }
 
     @Override
     public boolean equals(Object o) {

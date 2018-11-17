@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -40,6 +39,14 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     Set<Card> cards;
+
+    @ManyToOne
+    @JoinColumn(name = "state_id")
+    @JsonIgnore
+    private DialogState state;
+
+    @Column(name = "style")
+    private String style;
 
     @Override
     public boolean equals(Object o) {

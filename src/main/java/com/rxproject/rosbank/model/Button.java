@@ -1,6 +1,7 @@
 package com.rxproject.rosbank.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,12 +19,17 @@ public class Button {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "text")
+    private String text;
+
     @ManyToOne
     @JoinColumn(name = "state_id")
+    @JsonIgnore
     private DialogState state;
 
     @ManyToOne
     @JoinColumn(name = "target_state_id")
+    @JsonIgnore
     private DialogState targetState;
 
     @Column(name = "endpoint")
