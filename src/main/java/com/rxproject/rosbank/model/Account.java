@@ -1,5 +1,6 @@
 package com.rxproject.rosbank.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -64,6 +65,16 @@ public class Account {
         A76, //платина
         A98, //золото
         A99 //серебро
+    }
+
+    @JsonGetter("startDate")
+    public long getStartDateJson(){
+        return startDate.getTime();
+    }
+
+    @JsonGetter("expDate")
+    public long getExpDateJson(){
+        return expDate.getTime();
     }
 
     @Override
