@@ -1,6 +1,7 @@
 package com.rxproject.rosbank.model;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
@@ -22,9 +23,10 @@ public class Form {
     private Long id;
 
     @Column(name = "json")
+    @JsonIgnore
     private String json;
 
-    @JsonGetter("json")
+    @JsonGetter("fields")
     public JsonNode getBodyAsJson(){
         ObjectMapper objectMapper = new ObjectMapper();
         try {

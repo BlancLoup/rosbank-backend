@@ -1,13 +1,16 @@
 package com.rxproject.rosbank;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.rxproject.rosbank.model.*;
 import com.rxproject.rosbank.repository.*;
 import com.rxproject.rosbank.views.FormFabrics.FieldElements.DatePickerField;
 import com.rxproject.rosbank.views.FormFabrics.FieldElements.LabelField;
-import com.rxproject.rosbank.views.FormFabrics.FieldElements.PickerField;
 import com.rxproject.rosbank.views.FormFabrics.FieldElements.SwitchField;
+import com.rxproject.rosbank.views.FormFabrics.FieldElements.TextField;
 import com.rxproject.rosbank.views.FormFabrics.FormConstructor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -119,35 +122,31 @@ public class RosbankApplicationTests {
 
 		FormConstructor formContructor = new FormConstructor();
 
-		DatePickerField datePickerField = new DatePickerField();
-		datePickerField.setValue(new Date());
-		datePickerField.setLabel("Выберите дату");
-		datePickerField.setName("date_picker");
-		formContructor.addElement(datePickerField);
 
 		LabelField labelField = new LabelField();
-		labelField.setName("label_field");
-		labelField.setLabel("какой то лейбл");
+		labelField.setName("label");
+		labelField.setLabel("Заполните следующие поля");
 		formContructor.addElement(labelField);
 
-		PickerField pickerField = new PickerField();
-		pickerField.setName("picker");
-		pickerField.setLabel("picker");
-		List<String> values = new ArrayList<>();
-		values.add("value1");
-		values.add("value2");
-		values.add("value3");
-		pickerField.setVariants(values);
-		formContructor.addElement(pickerField);
+		TextField textField = new TextField();
+		textField.setName("passport");
+		textField.setLabel("Введите пасспортные данные");
+		formContructor.addElement(textField);
+
+		DatePickerField datePickerField = new DatePickerField();
+		datePickerField.setValue(new Date());
+		datePickerField.setName("dateValue");
+		datePickerField.setLabel("Выберите дату");
+		formContructor.addElement(datePickerField);
 
 		SwitchField switchField = new SwitchField();
-		switchField.setName("sw");
-		switchField.setLabel("switch");
+		switchField.setName("isCitizen");
+		switchField.setLabel("Вы являетесь гражданином РФ?");
 		switchField.setValue(true);
 		formContructor.addElement(switchField);
 
 		String result = formContructor.toJSON();
-		Form form = formRepository.getOne(1L);
+		Form form = formRepository.getOne(2L);
 		form.setJson(result);
 		formRepository.save(form);
 	}
@@ -163,5 +162,20 @@ public class RosbankApplicationTests {
 		});
 		int bp = 42;
 		dialogStateRepository.saveAll(dialogStates);
+	}
+
+	@Test
+	public void viewBuilder(){
+		JsonNodeFactory jnf = JsonNodeFactory.instance;
+		JsonNode node = jnf.objectNode();
+		((ObjectNode) node).put("asd","as");
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			String s = objectMapper.writeValueAsString(node);
+			int a = 11;
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+
 	}
 }

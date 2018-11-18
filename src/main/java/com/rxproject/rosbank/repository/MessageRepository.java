@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message, Long> {
 
-    List<Message> findByUserOrderByTimestampDesc(User user);
+    List<Message> findByUserOrderById(User user);
+
+    Message findLastByUserAndUserMessageIsNullOrderById(User user);
 
 }

@@ -3,7 +3,6 @@ package com.rxproject.rosbank.model;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rxproject.rosbank.utils.ViewWrapper;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,14 +37,14 @@ public class DialogState {
     private String endpoint;
 
     @Transient
-    private ViewWrapper view;
+    private String view;
 
     public enum Type {
-        BUTTON,
-        FORM,
-        TEXT,
-        DOC,
-        PHOTO
+        BUTTON, // название кнопки
+        FORM, // заполненная форма json
+        TEXT, // просто текст
+        DOC, // Документ загружен
+        PHOTO // Фото загружено
     }
 
     @JsonGetter("message")
@@ -53,6 +52,18 @@ public class DialogState {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.readTree(message);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    @JsonGetter("view")
+    public JsonNode getViewAsJson(){
+        if (view == null)
+            return null;
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readTree(view);
         } catch (IOException e) {
             return null;
         }

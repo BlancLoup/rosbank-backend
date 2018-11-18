@@ -45,8 +45,15 @@ public class User {
     @JsonIgnore
     private DialogState state;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "style")
-    private String style;
+    private Style style;
+
+    public enum Style {
+        normal,
+        gopnik,
+        tyan
+    }
 
     @Override
     public boolean equals(Object o) {

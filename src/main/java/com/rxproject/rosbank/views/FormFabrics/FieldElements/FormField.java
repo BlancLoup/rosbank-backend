@@ -6,10 +6,10 @@ import lombok.Setter;
 @Setter
 @Getter
 public class FormField {
-    public String name;
-    public String label;
-    public String hint;
-    public boolean enabled = true;
+    private String name;
+    private String label;
+    private String hint;
+    private boolean enabled = true;
 
     public enum Type {
         DATE_PICKER,

@@ -28,6 +28,10 @@ public class MessageService {
     }
 
     public List<Message> findByUser(User user){
-        return messageRepository.findByUserOrderByTimestampDesc(user);
+        return messageRepository.findByUserOrderById(user);
+    }
+
+    public Message findLastByUser(User user){
+        return messageRepository.findLastByUserAndUserMessageIsNullOrderById(user);
     }
 }

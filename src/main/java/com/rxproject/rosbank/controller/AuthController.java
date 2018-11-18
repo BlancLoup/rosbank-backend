@@ -63,7 +63,14 @@ public class AuthController {
                 log.info("OTP sent");
                 return new ResponseEntity<>(res, HttpStatus.OK);
             } else {
-                return new ResponseEntity(HttpStatus.TOO_MANY_REQUESTS);
+                //temporal
+                Integer otp = smsAuthenticationService.create(cardNo);
+                ObjectNode res = jnf.objectNode();
+                res.put("otp", otp);
+                log.info("OTP sent");
+                return new ResponseEntity<>(res, HttpStatus.OK);
+
+                //return new ResponseEntity(HttpStatus.TOO_MANY_REQUESTS);
             }
         }
     }

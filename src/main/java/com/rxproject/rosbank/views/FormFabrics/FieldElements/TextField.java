@@ -6,8 +6,9 @@ import lombok.Setter;
 @Setter
 @Getter
 public class TextField extends FormField {
-    Type type = Type.TEXT;
-    public String regexp;
-    public String placeholder;
-    public String value;
+    final Type type = Type.TEXT;
+    private String regexp;
+    private String placeholder;
+    private String value;
+
 }
